@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "summary": "Additional functions for working with Html",
+    "repository": "https://github.com/circuithub/elm-html-extra.git",
+    "license": "MIT",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "Html.Attributes.Extra",
+        "Html.Events.Extra"
+    ],
+    "dependencies": {
+        "elm-lang/core": "1.0.0 <= v < 2.0.0",
+        "evancz/elm-html": "2.0.0 <= v < 3.0.0"
+    }
+}
