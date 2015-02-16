@@ -3,6 +3,7 @@ module Html.Events.Extra where
 
 # Typed event decoders
 @docs targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
+@docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
 
 -}
 
