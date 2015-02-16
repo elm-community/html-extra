@@ -1,6 +1,9 @@
 module Html.Events.Extra where
 {-| Additional event handlers for html.
 
+# Event decoders
+@docs charCode
+
 # Typed event decoders
 @docs targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
 @docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
@@ -9,8 +12,16 @@ module Html.Events.Extra where
 
 import Html.Events (..)
 import Json.Decode as Json
+import Json.Decode ((:=))
 import Result
 import String
+import Maybe
+
+{-| Character code for key board events.
+This is being deprecated, but support for DOM3 Keyboard events is not yet present in most browsers.
+-}
+charCode : Json.Decoder (Maybe Char)
+charCode = Json.map (Maybe.map fst << String.uncons) ("charCode" := Json.string)
 
 {-| Floating-point target value.
 -}
