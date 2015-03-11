@@ -7,6 +7,9 @@ module Html.Attributes.Extra where
 # Semantic web
 @docs role
 
+# Meter element
+@docs low, high, optimum
+
 # Custom Attributes
 @docs floatProperty
 @docs intProperty
@@ -14,7 +17,7 @@ module Html.Attributes.Extra where
 -}
 
 import Html (Attribute)
-import Html.Attributes (attribute, property)
+import Html.Attributes (attribute, property, stringProperty)
 import Json.Encode as Json
 
 {-| Create arbitrary floating-point *properties*.
@@ -58,3 +61,21 @@ See the [official specs](http://www.w3.org/TR/role-attribute/).
 role : String -> Attribute
 role r =
   attribute "role" r
+
+{-| The upper numeric bound of the low end of the measured range, used with the meter element.
+-}
+low : String -> Attribute
+low =
+  stringProperty "low"
+
+{-| The lower numeric bound of the high end of the measured range, used with the meter element.
+-}
+high : String -> Attribute
+high =
+  stringProperty "high"
+
+{-| This attribute indicates the optimal numeric value, used with the meter element.
+-}
+optimum : String -> Attribute
+optimum =
+  stringProperty "optimum"
