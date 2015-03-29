@@ -10,6 +10,9 @@ module Html.Attributes.Extra where
 # Meter element
 @docs low, high, optimum
 
+# Media element
+@docs volume
+
 # Custom Attributes
 @docs floatProperty
 @docs intProperty
@@ -79,3 +82,9 @@ high =
 optimum : String -> Attribute
 optimum =
   stringProperty "optimum"
+
+{-| Audio volume, starting from 0.0 (silent) up to 1.0 (loudest).
+-}
+volume : Float -> Attribute
+volume =
+  floatProperty "volume"
