@@ -19,8 +19,8 @@ module Html.Attributes.Extra where
 
 -}
 
-import Html (Attribute)
-import Html.Attributes (attribute, property, stringProperty)
+import Html exposing (Attribute)
+import Html.Attributes exposing (attribute, property, stringProperty)
 import Json.Encode as Json
 
 {-| Create arbitrary floating-point *properties*.
