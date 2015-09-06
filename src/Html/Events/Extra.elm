@@ -1,6 +1,9 @@
 module Html.Events.Extra where
 {-| Additional event handlers for html.
 
+# Text Input helpers
+@docs onInput
+
 # Event decoders
 * TODO: `key`
 * TODO: `code`
@@ -14,6 +17,7 @@ module Html.Events.Extra where
 -}
 
 import Html.Events exposing (..)
+import Html
 import Json.Decode as Json
 import Json.Decode exposing ((:=))
 import Result
@@ -49,6 +53,14 @@ import Maybe
 -- keyEvent : Json.Decoder KeyEvent
 -- keyEvent =
 --     Json.oneOf [ ("keyCode" := int)
+
+{-| Return an [`input`](https://developer.mozilla.org/en-US/docs/Web/Events/input)
+event handler which passes along that event's `event.target.value` string.
+-}
+onInput : Signal.Address a -> (String -> a) -> Html.Attribute
+onInput address toAddressValue =
+    Html.Events.on "input" targetValue (\str -> Signal.message address (toAddressValue str))
+
 
 {-| Character code for key board events.
 This is being deprecated, but support for DOM3 Keyboard events is not yet present in most browsers.
