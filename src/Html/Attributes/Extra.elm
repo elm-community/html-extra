@@ -14,14 +14,28 @@ module Html.Attributes.Extra where
 @docs volume
 
 # Custom Attributes
+@docs stringProperty
+@docs boolProperty
 @docs floatProperty
 @docs intProperty
 
 -}
 
 import Html exposing (Attribute)
-import Html.Attributes exposing (attribute, property, stringProperty)
+import Html.Attributes exposing (attribute, property)
 import Json.Encode as Json
+
+{-| Create arbitrary string *properties*.
+-}
+stringProperty : String -> String -> Attribute
+stringProperty name string =
+  property name (Json.string string)
+
+{-| Create arbitrary bool *properties*.
+-}
+boolProperty : String -> Bool -> Attribute
+boolProperty name bool =
+  property name (Json.bool bool)
 
 {-| Create arbitrary floating-point *properties*.
 -}
