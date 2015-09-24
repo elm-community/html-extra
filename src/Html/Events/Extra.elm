@@ -16,10 +16,9 @@ module Html.Events.Extra where
 
 -}
 
-import Html.Events exposing (..)
 import Html
-import Json.Decode as Json
-import Json.Decode exposing ((:=))
+import Html.Events exposing (..)
+import Json.Decode as Json exposing ((:=))
 import Result
 import String
 import Maybe
