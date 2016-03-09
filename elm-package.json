@@ -1,7 +1,7 @@
 {
-    "version": "1.5.2",
+    "version": "1.0.0",
     "summary": "Additional functions for working with Html",
-    "repository": "https://github.com/circuithub/elm-html-extra.git",
+    "repository": "https://github.com/elm-community/elm-html-extra.git",
     "license": "MIT",
     "source-directories": [
         "src"
