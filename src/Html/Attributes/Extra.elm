@@ -106,7 +106,10 @@ volume : Float -> Attribute
 volume =
   floatProperty "volume"
 
-{-| Useful for inserting arbitrary HTML into an element. Note that the virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will have slower performance characteristics.
+{-| Useful for inserting arbitrary unescaped HTML into an element. This function comes with some caveats.
+
+* **Security:** You should never pass untrusted strings (e.g. from user input) to this function. Doing so will lead to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) vulnerabilities.
+* **Performance:** The virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will be slower.
 -}
 innerHtml : String -> Attribute
 innerHtml =
