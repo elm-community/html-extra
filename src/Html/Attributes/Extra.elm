@@ -13,6 +13,9 @@ module Html.Attributes.Extra where
 # Media element
 @docs volume
 
+# Unescaped HTML
+@docs innerHtml
+
 # Custom Attributes
 @docs stringProperty
 @docs boolProperty
@@ -102,3 +105,9 @@ optimum =
 volume : Float -> Attribute
 volume =
   floatProperty "volume"
+
+{-| Useful for inserting arbitrary HTML into an element. Note that the virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will have slower performance characteristics.
+-}
+innerHtml : String -> Attribute
+innerHtml =
+  stringProperty "innerHTML"
