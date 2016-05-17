@@ -1,12 +1,12 @@
 module Html.Extra
     exposing
-        ( embedStatic
+        ( static
         )
 
 {-| Convenience functionality on
 [`Html`](http://package.elm-lang.org/packages/elm-lang/html/latest/Html#Html)
 
-@docs embedStatic
+@docs static
 -}
 
 import Basics.Extra
@@ -23,6 +23,6 @@ it will not generate any messages. We may want to embed such static
 html into arbitrary views, while using types to enforce the
 staticness. That is what this function provides.
 -}
-embedStatic : Html Never -> Html msg
-embedStatic =
+static : Html Never -> Html msg
+static =
     Html.App.map Basics.Extra.never
