@@ -1,4 +1,4 @@
-module Html.Attributes.Extra where
+module Html.Attributes.Extra exposing (..)
 {-| Additional attributes for html
 
 # Inputs
@@ -30,25 +30,25 @@ import Json.Encode as Json
 
 {-| Create arbitrary string *properties*.
 -}
-stringProperty : String -> String -> Attribute
+stringProperty : String -> String -> Attribute msg
 stringProperty name string =
   property name (Json.string string)
 
 {-| Create arbitrary bool *properties*.
 -}
-boolProperty : String -> Bool -> Attribute
+boolProperty : String -> Bool -> Attribute msg
 boolProperty name bool =
   property name (Json.bool bool)
 
 {-| Create arbitrary floating-point *properties*.
 -}
-floatProperty : String -> Float -> Attribute
+floatProperty : String -> Float -> Attribute msg
 floatProperty name float =
   property name (Json.float float)
 
 {-| Create arbitrary integer *properties*.
 -}
-intProperty : String -> Int -> Attribute
+intProperty : String -> Int -> Attribute msg
 intProperty name int =
   property name (Json.int int)
 
@@ -60,7 +60,7 @@ It differs from `value` in that a floating point value will not necessarily over
     valueAsFloat 0.4 -- e.g. will not change the displayed value for input showing ".4"
 
 -}
-valueAsFloat : Float -> Attribute
+valueAsFloat : Float -> Attribute msg
 valueAsFloat value =
    floatProperty "valueAsNumber" value
 
@@ -71,38 +71,38 @@ It differs from `value` in that an integer value will not necessarily overwrite 
     valueAsInt 18 -- e.g. will not change the displayed value for input showing "00018"
 
 -}
-valueAsInt : Int -> Attribute
+valueAsInt : Int -> Attribute msg
 valueAsInt value =
   intProperty "valueAsNumber" value
 
 {-| Used to annotate markup languages with machine-extractable semantic information about the purpose of an element.
 See the [official specs](http://www.w3.org/TR/role-attribute/).
 -}
-role : String -> Attribute
+role : String -> Attribute msg
 role r =
   attribute "role" r
 
 {-| The upper numeric bound of the low end of the measured range, used with the meter element.
 -}
-low : String -> Attribute
+low : String -> Attribute msg
 low =
   stringProperty "low"
 
 {-| The lower numeric bound of the high end of the measured range, used with the meter element.
 -}
-high : String -> Attribute
+high : String -> Attribute msg
 high =
   stringProperty "high"
 
 {-| This attribute indicates the optimal numeric value, used with the meter element.
 -}
-optimum : String -> Attribute
+optimum : String -> Attribute msg
 optimum =
   stringProperty "optimum"
 
 {-| Audio volume, starting from 0.0 (silent) up to 1.0 (loudest).
 -}
-volume : Float -> Attribute
+volume : Float -> Attribute msg
 volume =
   floatProperty "volume"
 
@@ -111,6 +111,6 @@ volume =
 * **Security:** You should never pass untrusted strings (e.g. from user input) to this function. Doing so will lead to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) vulnerabilities.
 * **Performance:** The virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will be slower.
 -}
-innerHtml : String -> Attribute
+innerHtml : String -> Attribute msg
 innerHtml =
   stringProperty "innerHTML"
