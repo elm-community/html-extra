@@ -17,6 +17,7 @@ module Html.Events.Extra exposing (..)
 -}
 
 import Html
+import Html.App
 import Html.Events exposing (..)
 import Json.Decode as Json exposing ((:=))
 import Result
@@ -56,9 +57,9 @@ import Maybe
 {-| Return an [`input`](https://developer.mozilla.org/en-US/docs/Web/Events/input)
 event handler which passes along that event's `event.target.value` string.
 -}
-onInput : Signal.Address a -> (String -> a) -> Html.Attribute
-onInput address toAddressValue =
-    Html.Events.on "input" targetValue (\str -> Signal.message address (toAddressValue str))
+onInput : (String -> msg) -> Html.Attribute msg
+onInput toValue =
+    Html.App.map toValue (Html.Events.on "input" targetValue)
 
 
 {-| Character code for key board events.
