@@ -1,4 +1,4 @@
-module Html.Attributes.Extra where
+module Html.Attributes.Extra exposing (..)
 {-| Additional attributes for html
 
 # Inputs
