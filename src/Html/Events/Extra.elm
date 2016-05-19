@@ -1,4 +1,4 @@
-module Html.Events.Extra where
+module Html.Events.Extra exposing (..)
 {-| Additional event handlers for html.
 
 # Text Input helpers
