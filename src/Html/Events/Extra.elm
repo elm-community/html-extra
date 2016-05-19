@@ -17,7 +17,6 @@ module Html.Events.Extra exposing (..)
 -}
 
 import Html
-import Html.App
 import Html.Events exposing (..)
 import Json.Decode as Json exposing ((:=))
 import Result
@@ -59,7 +58,7 @@ event handler which passes along that event's `event.target.value` string.
 -}
 onInput : (String -> msg) -> Html.Attribute msg
 onInput toValue =
-    Html.App.map toValue (Html.Events.on "input" targetValue)
+    Html.Events.on "input" (Json.map toValue targetValue)
 
 
 {-| Character code for key board events.
