@@ -1,8 +1,5 @@
 module Html.Events.Extra exposing (..)
-{-| Additional event handlers for html.
-
-# Text Input helpers
-@docs onInput
+{-| Additional decoders for use with event handlers in html.
 
 # Event decoders
 * TODO: `key`
@@ -52,13 +49,6 @@ import Maybe
 -- keyEvent : Json.Decoder KeyEvent
 -- keyEvent =
 --     Json.oneOf [ ("keyCode" := int)
-
-{-| Return an [`input`](https://developer.mozilla.org/en-US/docs/Web/Events/input)
-event handler which passes along that event's `event.target.value` string.
--}
-onInput : (String -> msg) -> Html.Attribute msg
-onInput toValue =
-    Html.Events.on "input" (Json.map toValue targetValue)
 
 
 {-| Character code for key board events.
