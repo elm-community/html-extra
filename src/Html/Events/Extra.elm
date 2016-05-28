@@ -128,3 +128,16 @@ targetValueMaybeIntParse =
                         Nothing -> Ok Nothing
                         Just x  -> Result.map Just (f x)
   in Json.customDecoder targetValueMaybe (traverse String.toInt)
+
+{-| Parse the index of the selected option of a select.
+Returns Nothing in place of the spec's magic value -1.
+-}
+targetSelectedIndex : Json.Decoder (Maybe Int)
+targetSelectedIndex =
+  Json.at ["target", "selectedIndex"] (
+    Json.map (
+      \int -> if int == -1 then
+        Nothing
+      else
+        Just int)
+      Json.int)
