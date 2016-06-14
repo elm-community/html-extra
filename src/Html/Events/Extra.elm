@@ -10,6 +10,7 @@ module Html.Events.Extra exposing (..)
 # Typed event decoders
 @docs targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
 @docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
+@docs targetSelectedIndex
 
 -}
 
