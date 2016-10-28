@@ -11,6 +11,10 @@ module Html.Events.Extra
         , targetValueMaybeFloatParse
         , targetValueMaybeIntParse
         , targetSelectedIndex
+        , onClickPreventDefault
+        , onClickStopPropagation
+        , onClickPreventDefaultAndStopPropagation
+        , onEnter
         )
 
 {-| Additional decoders for use with event handlers in html.
@@ -26,10 +30,17 @@ module Html.Events.Extra
 @docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
 @docs targetSelectedIndex
 
+
+# Event Handlers
+@docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter
 -}
 
+import Html exposing (Attribute)
 import Html.Events exposing (..)
 import Json.Decode as Json
+import Result
+import String
+import Maybe
 
 
 -- TODO
@@ -217,3 +228,53 @@ targetSelectedIndex =
             )
             Json.int
         )
+
+
+
+-- Event Handlers
+
+
+{-| Always send `msg` upon click, preventing the browser's default behavior.
+-}
+onClickPreventDefault : msg -> Attribute msg
+onClickPreventDefault msg =
+    onWithOptions "click"
+        { defaultOptions | preventDefault = True }
+        (Json.succeed msg)
+
+
+{-| Always send `msg` upon click, preventing click propagation.
+-}
+onClickStopPropagation : msg -> Attribute msg
+onClickStopPropagation msg =
+    onWithOptions "click"
+        { defaultOptions | stopPropagation = True }
+        (Json.succeed msg)
+
+
+{-| Always send `msg` upon click, preventing the browser's default behavior and propagation
+-}
+onClickPreventDefaultAndStopPropagation : msg -> Attribute msg
+onClickPreventDefaultAndStopPropagation msg =
+    onWithOptions "click"
+        { defaultOptions
+            | stopPropagation = True
+            , preventDefault = True
+        }
+        (Json.succeed msg)
+
+
+{-| When the enter key is released, send the `msg`.
+    Otherwise, do nothing.
+-}
+onEnter : msg -> Attribute msg
+onEnter onEnterAction =
+    on "keyup" <|
+        Json.andThen
+            (\keyCode ->
+                if keyCode == 13 then
+                    Json.succeed onEnterAction
+                else
+                    Json.fail (toString keyCode)
+            )
+            keyCode
