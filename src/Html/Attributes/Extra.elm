@@ -1,6 +1,9 @@
 module Html.Attributes.Extra exposing (..)
 {-| Additional attributes for html
 
+# Embedding static attributes
+@docs static
+
 # Inputs
 @docs valueAsFloat, valueAsInt
 
@@ -27,6 +30,14 @@ module Html.Attributes.Extra exposing (..)
 import Html exposing (Attribute)
 import Html.Attributes exposing (attribute, property)
 import Json.Encode as Json
+
+{-| Embedding static attributes.
+
+Works alike to [`Html.Extra.static`](Html-Extra#static).
+-}
+static : Attribute Never -> Attribute msg
+static =
+    Html.Attributes.map never
 
 {-| Create arbitrary string *properties*.
 -}
