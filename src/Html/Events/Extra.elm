@@ -1,4 +1,18 @@
-module Html.Events.Extra exposing (..)
+module Html.Events.Extra
+    exposing
+        (charCode
+        , targetValueFloat
+        , targetValueInt
+        , targetValueMaybe
+        , targetValueMaybeFloat
+        , targetValueMaybeInt
+        , targetValueFloatParse
+        , targetValueIntParse
+        , targetValueMaybeFloatParse
+        , targetValueMaybeIntParse
+        , targetSelectedIndex
+        )
+
 {-| Additional decoders for use with event handlers in html.
 
 # Event decoders
@@ -16,10 +30,11 @@ module Html.Events.Extra exposing (..)
 
 import Html
 import Html.Events exposing (..)
-import Json.Decode as Json exposing ((:=))
+import Json.Decode as Json
 import Result
 import String
 import Maybe
+import Tuple
 
 -- TODO
 -- {-| Decode the key that was pressed.
@@ -35,7 +50,7 @@ import Maybe
 --
 -- -}
 -- key : Json.Decoder String
--- key = Json.oneOf [ "key" := string, "keyIdentifier" := string ]
+-- key = Json.oneOf [ Json.field "key" string, Json.field "keyIdentifier" string ]
 
 -- TODO: Waiting for proper support in chrome & safari
 -- {-| Return a string identifying the key that was pressed.
@@ -44,25 +59,41 @@ import Maybe
 -- -}
 -- code : Json.Decoder String
 -- code =
---     ("code" := string)
+--     Json.field "code" string
 
 -- TODO: Complete keyboard event
 -- keyEvent : Json.Decoder KeyEvent
 -- keyEvent =
---     Json.oneOf [ ("keyCode" := int)
+--     Json.oneOf [ Json.field "keyCode" int ]
 
 
 {-| Character code for key board events.
 This is being deprecated, but support for DOM3 Keyboard events is not yet present in most browsers.
 -}
 charCode : Json.Decoder (Maybe Char)
-charCode = Json.map (Maybe.map fst << String.uncons) ("charCode" := Json.string)
+charCode = Json.map (Maybe.map Tuple.first << String.uncons) (Json.field "charCode" Json.string)
+
+
+-- implementation taken from: https://groups.google.com/d/msg/elm-dev/Ctl_kSKJuYc/rjkdBxx6AwAJ
+customDecoder : Json.Decoder a -> (a -> Result String b) -> Json.Decoder b
+customDecoder d f =
+    let
+        resultDecoder x =
+            case x of
+                Ok a ->
+                    Json.succeed a
+
+                Err e ->
+                    Json.fail e
+    in
+        Json.map f d |> Json.andThen resultDecoder
+
 
 {-| Floating-point target value.
 -}
 targetValueFloat : Json.Decoder Float
 targetValueFloat =
-  Json.customDecoder (Json.at ["target", "valueAsNumber"] Json.float) <| \v ->
+  customDecoder (Json.at ["target", "valueAsNumber"] Json.float) <| \v ->
     if isNaN v
     then Err "Not a number"
     else Ok v
@@ -76,16 +107,16 @@ targetValueInt =
 {-| String or empty target value.
 -}
 targetValueMaybe : Json.Decoder (Maybe String)
-targetValueMaybe = Json.customDecoder targetValue (\s -> Ok <| if s == "" then Nothing else Just s)
+targetValueMaybe = customDecoder targetValue (\s -> Ok <| if s == "" then Nothing else Just s)
 
 {-| Floating-point or empty target value.
 -}
 targetValueMaybeFloat : Json.Decoder (Maybe Float)
 targetValueMaybeFloat =
-  targetValueMaybe `Json.andThen` \mval ->
+  targetValueMaybe |> Json.andThen (\mval ->
     case mval of
       Nothing -> Json.succeed Nothing
-      Just _ -> Json.map Just targetValueFloat
+      Just _ -> Json.map Just targetValueFloat)
 
 {-| Integer or empty target value.
 -}
@@ -94,21 +125,21 @@ targetValueMaybeInt =
   let traverse f mx = case mx of
                         Nothing -> Ok Nothing
                         Just x  -> Result.map Just (f x)
-  in Json.customDecoder targetValueMaybe (traverse String.toInt)
+  in customDecoder targetValueMaybe (traverse String.toInt)
 
 {-| Parse a floating-point value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueFloatParse : Json.Decoder Float
 targetValueFloatParse =
-  Json.customDecoder targetValue String.toFloat
+  customDecoder targetValue String.toFloat
 
 {-| Parse an integer value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueIntParse : Json.Decoder Int
 targetValueIntParse =
-  Json.customDecoder targetValue String.toInt
+  customDecoder targetValue String.toInt
 
 {-| Parse an optional floating-point value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
@@ -118,7 +149,7 @@ targetValueMaybeFloatParse =
   let traverse f mx = case mx of
                         Nothing -> Ok Nothing
                         Just x  -> Result.map Just (f x)
-  in Json.customDecoder targetValueMaybe (traverse String.toFloat)
+  in customDecoder targetValueMaybe (traverse String.toFloat)
 
 {-| Parse an optional integer value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
@@ -128,7 +159,7 @@ targetValueMaybeIntParse =
   let traverse f mx = case mx of
                         Nothing -> Ok Nothing
                         Just x  -> Result.map Just (f x)
-  in Json.customDecoder targetValueMaybe (traverse String.toInt)
+  in customDecoder targetValueMaybe (traverse String.toInt)
 
 {-| Parse the index of the selected option of a select.
 Returns Nothing in place of the spec's magic value -1.

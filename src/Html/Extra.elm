@@ -9,9 +9,7 @@ module Html.Extra
 @docs static
 -}
 
-import Basics.Extra
 import Html exposing (Html)
-import Html.App
 
 
 {-| Embedding static html.
@@ -29,4 +27,4 @@ staticness. That is what this function provides.
 -}
 static : Html Never -> Html msg
 static =
-    Html.App.map Basics.Extra.never
+    Html.map never
