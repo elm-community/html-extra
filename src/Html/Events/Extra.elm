@@ -28,13 +28,8 @@ module Html.Events.Extra
 
 -}
 
-import Html
 import Html.Events exposing (..)
 import Json.Decode as Json
-import Result
-import String
-import Maybe
-import Tuple
 
 -- TODO
 -- {-| Decode the key that was pressed.
