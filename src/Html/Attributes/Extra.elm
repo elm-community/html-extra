@@ -1,4 +1,5 @@
 module Html.Attributes.Extra exposing (..)
+
 {-| Additional attributes for html
 
 # Embedding static attributes
@@ -31,6 +32,7 @@ import Html exposing (Attribute)
 import Html.Attributes exposing (attribute, property)
 import Json.Encode as Json
 
+
 {-| Embedding static attributes.
 
 Works alike to [`Html.Extra.static`](Html-Extra#static).
@@ -39,29 +41,34 @@ static : Attribute Never -> Attribute msg
 static =
     Html.Attributes.map never
 
+
 {-| Create arbitrary string *properties*.
 -}
 stringProperty : String -> String -> Attribute msg
 stringProperty name string =
-  property name (Json.string string)
+    property name (Json.string string)
+
 
 {-| Create arbitrary bool *properties*.
 -}
 boolProperty : String -> Bool -> Attribute msg
 boolProperty name bool =
-  property name (Json.bool bool)
+    property name (Json.bool bool)
+
 
 {-| Create arbitrary floating-point *properties*.
 -}
 floatProperty : String -> Float -> Attribute msg
 floatProperty name float =
-  property name (Json.float float)
+    property name (Json.float float)
+
 
 {-| Create arbitrary integer *properties*.
 -}
 intProperty : String -> Int -> Attribute msg
 intProperty name int =
-  property name (Json.int int)
+    property name (Json.int int)
+
 
 {-| Uses `valueAsNumber` to update an input with a floating-point value.
 This should only be used on &lt;input&gt; of type `number`, `range`, or `date`.
@@ -73,7 +80,8 @@ It differs from `value` in that a floating point value will not necessarily over
 -}
 valueAsFloat : Float -> Attribute msg
 valueAsFloat value =
-   floatProperty "valueAsNumber" value
+    floatProperty "valueAsNumber" value
+
 
 {-| Uses `valueAsNumber` to update an input with an integer value.
 This should only be used on &lt;input&gt; of type `number`, `range`, or `date`.
@@ -84,38 +92,44 @@ It differs from `value` in that an integer value will not necessarily overwrite 
 -}
 valueAsInt : Int -> Attribute msg
 valueAsInt value =
-  intProperty "valueAsNumber" value
+    intProperty "valueAsNumber" value
+
 
 {-| Used to annotate markup languages with machine-extractable semantic information about the purpose of an element.
 See the [official specs](http://www.w3.org/TR/role-attribute/).
 -}
 role : String -> Attribute msg
 role r =
-  attribute "role" r
+    attribute "role" r
+
 
 {-| The upper numeric bound of the low end of the measured range, used with the meter element.
 -}
 low : String -> Attribute msg
 low =
-  stringProperty "low"
+    stringProperty "low"
+
 
 {-| The lower numeric bound of the high end of the measured range, used with the meter element.
 -}
 high : String -> Attribute msg
 high =
-  stringProperty "high"
+    stringProperty "high"
+
 
 {-| This attribute indicates the optimal numeric value, used with the meter element.
 -}
 optimum : String -> Attribute msg
 optimum =
-  stringProperty "optimum"
+    stringProperty "optimum"
+
 
 {-| Audio volume, starting from 0.0 (silent) up to 1.0 (loudest).
 -}
 volume : Float -> Attribute msg
 volume =
-  floatProperty "volume"
+    floatProperty "volume"
+
 
 {-| Useful for inserting arbitrary unescaped HTML into an element. This function comes with some caveats.
 
@@ -124,4 +138,4 @@ volume =
 -}
 innerHtml : String -> Attribute msg
 innerHtml =
-  stringProperty "innerHTML"
+    stringProperty "innerHTML"

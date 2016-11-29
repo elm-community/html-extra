@@ -1,6 +1,6 @@
 module Html.Events.Extra
     exposing
-        (charCode
+        ( charCode
         , targetValueFloat
         , targetValueInt
         , targetValueMaybe
@@ -31,6 +31,7 @@ module Html.Events.Extra
 import Html.Events exposing (..)
 import Json.Decode as Json
 
+
 -- TODO
 -- {-| Decode the key that was pressed.
 -- The key attribute is intended for users who are interested in the meaning of the key being pressed, taking into account the current keyboard layout.
@@ -46,7 +47,6 @@ import Json.Decode as Json
 -- -}
 -- key : Json.Decoder String
 -- key = Json.oneOf [ Json.field "key" string, Json.field "keyIdentifier" string ]
-
 -- TODO: Waiting for proper support in chrome & safari
 -- {-| Return a string identifying the key that was pressed.
 -- `keyCode`, `charCode` and `which` are all being deprecated. You should avoid using these in favour of `key` and `code`.
@@ -55,7 +55,6 @@ import Json.Decode as Json
 -- code : Json.Decoder String
 -- code =
 --     Json.field "code" string
-
 -- TODO: Complete keyboard event
 -- keyEvent : Json.Decoder KeyEvent
 -- keyEvent =
@@ -66,10 +65,14 @@ import Json.Decode as Json
 This is being deprecated, but support for DOM3 Keyboard events is not yet present in most browsers.
 -}
 charCode : Json.Decoder (Maybe Char)
-charCode = Json.map (Maybe.map Tuple.first << String.uncons) (Json.field "charCode" Json.string)
+charCode =
+    Json.map (Maybe.map Tuple.first << String.uncons) (Json.field "charCode" Json.string)
+
 
 
 -- implementation taken from: https://groups.google.com/d/msg/elm-dev/Ctl_kSKJuYc/rjkdBxx6AwAJ
+
+
 customDecoder : Json.Decoder a -> (a -> Result String b) -> Json.Decoder b
 customDecoder d f =
     let
@@ -88,83 +91,129 @@ customDecoder d f =
 -}
 targetValueFloat : Json.Decoder Float
 targetValueFloat =
-  customDecoder (Json.at ["target", "valueAsNumber"] Json.float) <| \v ->
-    if isNaN v
-    then Err "Not a number"
-    else Ok v
+    customDecoder (Json.at [ "target", "valueAsNumber" ] Json.float) <|
+        \v ->
+            if isNaN v then
+                Err "Not a number"
+            else
+                Ok v
+
 
 {-| Integer target value.
 -}
 targetValueInt : Json.Decoder Int
 targetValueInt =
-  Json.at ["target", "valueAsNumber"] Json.int
+    Json.at [ "target", "valueAsNumber" ] Json.int
+
 
 {-| String or empty target value.
 -}
 targetValueMaybe : Json.Decoder (Maybe String)
-targetValueMaybe = customDecoder targetValue (\s -> Ok <| if s == "" then Nothing else Just s)
+targetValueMaybe =
+    customDecoder targetValue
+        (\s ->
+            Ok <|
+                if s == "" then
+                    Nothing
+                else
+                    Just s
+        )
+
 
 {-| Floating-point or empty target value.
 -}
 targetValueMaybeFloat : Json.Decoder (Maybe Float)
 targetValueMaybeFloat =
-  targetValueMaybe |> Json.andThen (\mval ->
-    case mval of
-      Nothing -> Json.succeed Nothing
-      Just _ -> Json.map Just targetValueFloat)
+    targetValueMaybe
+        |> Json.andThen
+            (\mval ->
+                case mval of
+                    Nothing ->
+                        Json.succeed Nothing
+
+                    Just _ ->
+                        Json.map Just targetValueFloat
+            )
+
 
 {-| Integer or empty target value.
 -}
 targetValueMaybeInt : Json.Decoder (Maybe Int)
 targetValueMaybeInt =
-  let traverse f mx = case mx of
-                        Nothing -> Ok Nothing
-                        Just x  -> Result.map Just (f x)
-  in customDecoder targetValueMaybe (traverse String.toInt)
+    let
+        traverse f mx =
+            case mx of
+                Nothing ->
+                    Ok Nothing
+
+                Just x ->
+                    Result.map Just (f x)
+    in
+        customDecoder targetValueMaybe (traverse String.toInt)
+
 
 {-| Parse a floating-point value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueFloatParse : Json.Decoder Float
 targetValueFloatParse =
-  customDecoder targetValue String.toFloat
+    customDecoder targetValue String.toFloat
+
 
 {-| Parse an integer value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueIntParse : Json.Decoder Int
 targetValueIntParse =
-  customDecoder targetValue String.toInt
+    customDecoder targetValue String.toInt
+
 
 {-| Parse an optional floating-point value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueMaybeFloatParse : Json.Decoder (Maybe Float)
 targetValueMaybeFloatParse =
-  let traverse f mx = case mx of
-                        Nothing -> Ok Nothing
-                        Just x  -> Result.map Just (f x)
-  in customDecoder targetValueMaybe (traverse String.toFloat)
+    let
+        traverse f mx =
+            case mx of
+                Nothing ->
+                    Ok Nothing
+
+                Just x ->
+                    Result.map Just (f x)
+    in
+        customDecoder targetValueMaybe (traverse String.toFloat)
+
 
 {-| Parse an optional integer value from the input instead of using `valueAsNumber`.
 Use this with inputs that do not have a `number` type.
 -}
 targetValueMaybeIntParse : Json.Decoder (Maybe Int)
 targetValueMaybeIntParse =
-  let traverse f mx = case mx of
-                        Nothing -> Ok Nothing
-                        Just x  -> Result.map Just (f x)
-  in customDecoder targetValueMaybe (traverse String.toInt)
+    let
+        traverse f mx =
+            case mx of
+                Nothing ->
+                    Ok Nothing
+
+                Just x ->
+                    Result.map Just (f x)
+    in
+        customDecoder targetValueMaybe (traverse String.toInt)
+
 
 {-| Parse the index of the selected option of a select.
 Returns Nothing in place of the spec's magic value -1.
 -}
 targetSelectedIndex : Json.Decoder (Maybe Int)
 targetSelectedIndex =
-  Json.at ["target", "selectedIndex"] (
-    Json.map (
-      \int -> if int == -1 then
-        Nothing
-      else
-        Just int)
-      Json.int)
+    Json.at [ "target", "selectedIndex" ]
+        (Json.map
+            (\int ->
+                if int == -1 then
+                    Nothing
+                else
+                    Just int
+            )
+            Json.int
+        )
