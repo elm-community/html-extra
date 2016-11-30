@@ -1,7 +1,10 @@
-# Additional functions for working with Html
-Experimental package with convenience functions for working with Html.
-Note that this API is experimental and likely to go through many more iterations.
+# Additional HTML-related Functions
+
+This package contains convenience functions for working with Html, beyond that
+which `elm-lang/html` provides.
 
 Feedback and contributions are very welcome.
 
+## License
 
+MIT
