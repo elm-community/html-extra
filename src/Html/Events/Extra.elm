@@ -38,9 +38,6 @@ module Html.Events.Extra
 import Html exposing (Attribute)
 import Html.Events exposing (..)
 import Json.Decode as Json
-import Result
-import String
-import Maybe
 
 
 -- TODO
