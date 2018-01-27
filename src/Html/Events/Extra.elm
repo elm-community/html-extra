@@ -261,12 +261,12 @@ onClickPreventDefaultAndStopPropagation msg =
         (Json.succeed msg)
 
 
-{-| When the enter key is released, send the `msg`.
+{-| When the enter key is pressed, send the `msg`.
     Otherwise, do nothing.
 -}
 onEnter : msg -> Attribute msg
 onEnter onEnterAction =
-    on "keyup" <|
+    on "keypress" <|
         Json.andThen
             (\keyCode ->
                 if keyCode == 13 then
