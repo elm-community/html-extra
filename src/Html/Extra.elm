@@ -1,12 +1,14 @@
 module Html.Extra
     exposing
         ( static
+        , nothing
         )
 
 {-| Convenience functionality on
 [`Html`](http://package.elm-lang.org/packages/elm-lang/html/latest/Html#Html)
 
-@docs static
+@docs static, nothing
+
 -}
 
 import Html exposing (Html)
@@ -28,3 +30,14 @@ staticness. That is what this function provides.
 static : Html Never -> Html msg
 static =
     Html.map never
+
+
+{-| Render nothing.
+
+A more idiomatic way of rendering nothing compared to using
+`Html.text ""` directly.
+
+-}
+nothing : Html msg
+nothing =
+    Html.text ""
