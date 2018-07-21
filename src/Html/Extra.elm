@@ -1,13 +1,9 @@
-module Html.Extra
-    exposing
-        ( static
-        , nothing
-        )
+module Html.Extra exposing (static, nothing, viewIf, viewIfLazy)
 
 {-| Convenience functionality on
 [`Html`](http://package.elm-lang.org/packages/elm-lang/html/latest/Html#Html)
 
-@docs static, nothing
+@docs static, nothing, viewIf, viewIfLazy
 
 -}
 
@@ -42,3 +38,47 @@ A more idiomatic way of rendering nothing compared to using
 nothing : Html msg
 nothing =
     Html.text ""
+
+
+{-| A function to only render html under a certain condition
+
+    fieldView : Model -> Html Msg
+    fieldView model =
+        div
+            []
+            [ fieldInput model
+            , viewIf
+                (not <| List.isEmpty model.errors)
+                errorsView
+            ]
+
+-}
+viewIf : Bool -> Html msg -> Html msg
+viewIf condition html =
+    if condition then
+        html
+
+    else
+        Html.text ""
+
+
+{-| Just like `viewIf` except its more performant. In viewIf, the html is always evaluated, even if its not rendered. `viewIfLazy` only evaluates your view function if it needs to. The trade off is your view function needs to accept a unit type (`()`) as its final parameter
+
+    fieldView : Model -> Html Msg
+    fieldView model =
+        div
+            []
+            [ fieldInput model
+            , viewIf
+                (not <| List.isEmpty model.errors)
+                errorsView
+            ]
+
+-}
+viewIfLazy : Bool -> (() -> Html msg) -> Html msg
+viewIfLazy condition htmlF =
+    if condition then
+        htmlF ()
+
+    else
+        Html.text ""
