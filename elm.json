@@ -1,0 +1,19 @@
+{
+    "type": "package",
+    "name": "elm-community/html-extra",
+    "summary": "Additional functions for working with Html",
+    "license": "MIT",
+    "version": "2.3.0",
+    "exposed-modules": [
+        "Html.Extra",
+        "Html.Attributes.Extra",
+        "Html.Events.Extra"
+    ],
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    "dependencies": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/html": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0"
+    },
+    "test-dependencies": {}
+}

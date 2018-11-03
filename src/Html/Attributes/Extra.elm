@@ -1,26 +1,51 @@
-module Html.Attributes.Extra exposing (..)
+module Html.Attributes.Extra exposing
+    ( static
+    , valueAsFloat, valueAsInt
+    , role
+    , low, high, optimum
+    , volume
+    , innerHtml
+    , stringProperty
+    , boolProperty
+    , floatProperty
+    , intProperty
+    )
 
 {-| Additional attributes for html
 
+
 # Embedding static attributes
+
 @docs static
 
+
 # Inputs
+
 @docs valueAsFloat, valueAsInt
 
+
 # Semantic web
+
 @docs role
 
+
 # Meter element
+
 @docs low, high, optimum
 
+
 # Media element
+
 @docs volume
 
+
 # Unescaped HTML
+
 @docs innerHtml
 
+
 # Custom Attributes
+
 @docs stringProperty
 @docs boolProperty
 @docs floatProperty
@@ -36,34 +61,35 @@ import Json.Encode as Json
 {-| Embedding static attributes.
 
 Works alike to [`Html.Extra.static`](Html-Extra#static).
+
 -}
 static : Attribute Never -> Attribute msg
 static =
     Html.Attributes.map never
 
 
-{-| Create arbitrary string *properties*.
+{-| Create arbitrary string _properties_.
 -}
 stringProperty : String -> String -> Attribute msg
 stringProperty name string =
     property name (Json.string string)
 
 
-{-| Create arbitrary bool *properties*.
+{-| Create arbitrary bool _properties_.
 -}
 boolProperty : String -> Bool -> Attribute msg
 boolProperty name bool =
     property name (Json.bool bool)
 
 
-{-| Create arbitrary floating-point *properties*.
+{-| Create arbitrary floating-point _properties_.
 -}
 floatProperty : String -> Float -> Attribute msg
 floatProperty name float =
     property name (Json.float float)
 
 
-{-| Create arbitrary integer *properties*.
+{-| Create arbitrary integer _properties_.
 -}
 intProperty : String -> Int -> Attribute msg
 intProperty name int =
@@ -75,6 +101,7 @@ This should only be used on &lt;input&gt; of type `number`, `range`, or `date`.
 It differs from `value` in that a floating point value will not necessarily overwrite the contents on an input element.
 
     valueAsFloat 2.5 -- e.g. will not change the displayed value for input showing "2.5000"
+
     valueAsFloat 0.4 -- e.g. will not change the displayed value for input showing ".4"
 
 -}
@@ -133,8 +160,9 @@ volume =
 
 {-| Useful for inserting arbitrary unescaped HTML into an element. This function comes with some caveats.
 
-* **Security:** You should never pass untrusted strings (e.g. from user input) to this function. Doing so will lead to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) vulnerabilities.
-* **Performance:** The virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will be slower.
+  - **Security:** You should never pass untrusted strings (e.g. from user input) to this function. Doing so will lead to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) vulnerabilities.
+  - **Performance:** The virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will be slower.
+
 -}
 innerHtml : String -> Attribute msg
 innerHtml =

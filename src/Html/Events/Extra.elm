@@ -1,43 +1,40 @@
-module Html.Events.Extra
-    exposing
-        ( charCode
-        , targetValueFloat
-        , targetValueInt
-        , targetValueMaybe
-        , targetValueMaybeFloat
-        , targetValueMaybeInt
-        , targetValueFloatParse
-        , targetValueIntParse
-        , targetValueMaybeFloatParse
-        , targetValueMaybeIntParse
-        , targetSelectedIndex
-        , onClickPreventDefault
-        , onClickStopPropagation
-        , onClickPreventDefaultAndStopPropagation
-        , onEnter
-        )
+module Html.Events.Extra exposing
+    ( targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
+    , targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
+    , targetSelectedIndex
+    , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter
+    , charCode
+    )
 
 {-| Additional decoders for use with event handlers in html.
 
+
 # Event decoders
-* TODO: `key`
-* TODO: `code`
-* TODO: `KeyEvent`, `keyEvent`
-@docs charCode
+
+  - TODO: `key`
+  - TODO: `code`
+  - TODO: `KeyEvent`, `keyEvent`
+
+    @docs charCode
+
 
 # Typed event decoders
+
 @docs targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
 @docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
 @docs targetSelectedIndex
 
 
 # Event Handlers
+
 @docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter
+
 -}
 
 import Html exposing (Attribute)
 import Html.Events exposing (..)
 import Json.Decode as Json
+
 
 
 -- TODO
@@ -92,7 +89,21 @@ customDecoder d f =
                 Err e ->
                     Json.fail e
     in
-        Json.map f d |> Json.andThen resultDecoder
+    Json.map f d |> Json.andThen resultDecoder
+
+
+maybeStringToResult : Maybe a -> Result String a
+maybeStringToResult = Result.fromMaybe "could not convert string"
+
+
+traverse : (String -> Maybe a) -> Maybe String -> Result String (Maybe a)
+traverse f mx =
+    case mx of
+        Nothing ->
+            Ok Nothing
+
+        Just x ->
+            x |> f |> maybeStringToResult |> Result.map Just
 
 
 {-| Floating-point target value.
@@ -103,6 +114,7 @@ targetValueFloat =
         \v ->
             if isNaN v then
                 Err "Not a number"
+
             else
                 Ok v
 
@@ -123,6 +135,7 @@ targetValueMaybe =
             Ok <|
                 if s == "" then
                     Nothing
+
                 else
                     Just s
         )
@@ -148,16 +161,7 @@ targetValueMaybeFloat =
 -}
 targetValueMaybeInt : Json.Decoder (Maybe Int)
 targetValueMaybeInt =
-    let
-        traverse f mx =
-            case mx of
-                Nothing ->
-                    Ok Nothing
-
-                Just x ->
-                    Result.map Just (f x)
-    in
-        customDecoder targetValueMaybe (traverse String.toInt)
+    customDecoder targetValueMaybe (traverse String.toInt)
 
 
 {-| Parse a floating-point value from the input instead of using `valueAsNumber`.
@@ -165,7 +169,7 @@ Use this with inputs that do not have a `number` type.
 -}
 targetValueFloatParse : Json.Decoder Float
 targetValueFloatParse =
-    customDecoder targetValue String.toFloat
+    customDecoder targetValue (String.toFloat >> maybeStringToResult)
 
 
 {-| Parse an integer value from the input instead of using `valueAsNumber`.
@@ -173,7 +177,7 @@ Use this with inputs that do not have a `number` type.
 -}
 targetValueIntParse : Json.Decoder Int
 targetValueIntParse =
-    customDecoder targetValue String.toInt
+    customDecoder targetValue  (String.toInt >> maybeStringToResult)
 
 
 {-| Parse an optional floating-point value from the input instead of using `valueAsNumber`.
@@ -181,16 +185,7 @@ Use this with inputs that do not have a `number` type.
 -}
 targetValueMaybeFloatParse : Json.Decoder (Maybe Float)
 targetValueMaybeFloatParse =
-    let
-        traverse f mx =
-            case mx of
-                Nothing ->
-                    Ok Nothing
-
-                Just x ->
-                    Result.map Just (f x)
-    in
-        customDecoder targetValueMaybe (traverse String.toFloat)
+    customDecoder targetValueMaybe (traverse String.toFloat)
 
 
 {-| Parse an optional integer value from the input instead of using `valueAsNumber`.
@@ -198,16 +193,7 @@ Use this with inputs that do not have a `number` type.
 -}
 targetValueMaybeIntParse : Json.Decoder (Maybe Int)
 targetValueMaybeIntParse =
-    let
-        traverse f mx =
-            case mx of
-                Nothing ->
-                    Ok Nothing
-
-                Just x ->
-                    Result.map Just (f x)
-    in
-        customDecoder targetValueMaybe (traverse String.toInt)
+    customDecoder targetValueMaybe (traverse String.toInt)
 
 
 {-| Parse the index of the selected option of a select.
@@ -220,6 +206,7 @@ targetSelectedIndex =
             (\int ->
                 if int == -1 then
                     Nothing
+
                 else
                     Just int
             )
@@ -235,34 +222,25 @@ targetSelectedIndex =
 -}
 onClickPreventDefault : msg -> Attribute msg
 onClickPreventDefault msg =
-    onWithOptions "click"
-        { defaultOptions | preventDefault = True }
-        (Json.succeed msg)
+    custom "click" (Json.succeed { message = msg, stopPropagation = False, preventDefault = True })
 
 
 {-| Always send `msg` upon click, preventing click propagation.
 -}
 onClickStopPropagation : msg -> Attribute msg
 onClickStopPropagation msg =
-    onWithOptions "click"
-        { defaultOptions | stopPropagation = True }
-        (Json.succeed msg)
+    custom "click" (Json.succeed { message = msg, stopPropagation = True, preventDefault = False })
 
 
 {-| Always send `msg` upon click, preventing the browser's default behavior and propagation
 -}
 onClickPreventDefaultAndStopPropagation : msg -> Attribute msg
 onClickPreventDefaultAndStopPropagation msg =
-    onWithOptions "click"
-        { defaultOptions
-            | stopPropagation = True
-            , preventDefault = True
-        }
-        (Json.succeed msg)
+    custom "click" (Json.succeed { message = msg, stopPropagation = True, preventDefault = True })
 
 
 {-| When the enter key is released, send the `msg`.
-    Otherwise, do nothing.
+Otherwise, do nothing.
 -}
 onEnter : msg -> Attribute msg
 onEnter onEnterAction =
@@ -271,7 +249,8 @@ onEnter onEnterAction =
             (\keyCode ->
                 if keyCode == 13 then
                     Json.succeed onEnterAction
+
                 else
-                    Json.fail (toString keyCode)
+                    Json.fail (String.fromInt keyCode)
             )
             keyCode
