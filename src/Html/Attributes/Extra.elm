@@ -4,7 +4,6 @@ module Html.Attributes.Extra exposing
     , role
     , low, high, optimum
     , volume
-    , innerHtml
     , stringProperty
     , boolProperty
     , floatProperty
@@ -38,10 +37,6 @@ module Html.Attributes.Extra exposing
 
 @docs volume
 
-
-# Unescaped HTML
-
-@docs innerHtml
 
 
 # Custom Attributes
@@ -156,14 +151,3 @@ optimum =
 volume : Float -> Attribute msg
 volume =
     floatProperty "volume"
-
-
-{-| Useful for inserting arbitrary unescaped HTML into an element. This function comes with some caveats.
-
-  - **Security:** You should never pass untrusted strings (e.g. from user input) to this function. Doing so will lead to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)) vulnerabilities.
-  - **Performance:** The virtual DOM subsystem is not aware of HTML inserted in this manner, so these HTML fragments will be slower.
-
--}
-innerHtml : String -> Attribute msg
-innerHtml =
-    stringProperty "innerHTML"
