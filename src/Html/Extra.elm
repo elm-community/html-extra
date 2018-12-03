@@ -59,7 +59,7 @@ viewIf condition html =
         html
 
     else
-        Html.text ""
+        nothing
 
 
 {-| Just like `viewIf` except its more performant. In viewIf, the html is always evaluated, even if its not rendered. `viewIfLazy` only evaluates your view function if it needs to. The trade off is your view function needs to accept a unit type (`()`) as its final parameter
@@ -81,4 +81,4 @@ viewIfLazy condition htmlF =
         htmlF ()
 
     else
-        Html.text ""
+        nothing
