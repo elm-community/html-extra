@@ -12,7 +12,9 @@ module Html.Events.Extra exposing
 # Event decoders
 
   - TODO: `key`
+
   - TODO: `code`
+
   - TODO: `KeyEvent`, `keyEvent`
 
     @docs charCode
@@ -93,7 +95,8 @@ customDecoder d f =
 
 
 maybeStringToResult : Maybe a -> Result String a
-maybeStringToResult = Result.fromMaybe "could not convert string"
+maybeStringToResult =
+    Result.fromMaybe "could not convert string"
 
 
 traverse : (String -> Maybe a) -> Maybe String -> Result String (Maybe a)
@@ -177,7 +180,7 @@ Use this with inputs that do not have a `number` type.
 -}
 targetValueIntParse : Json.Decoder Int
 targetValueIntParse =
-    customDecoder targetValue  (String.toInt >> maybeStringToResult)
+    customDecoder targetValue (String.toInt >> maybeStringToResult)
 
 
 {-| Parse an optional floating-point value from the input instead of using `valueAsNumber`.
