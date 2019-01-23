@@ -2,7 +2,7 @@ module Html.Events.Extra exposing
     ( targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
     , targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
     , targetSelectedIndex
-    , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter
+    , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange
     , charCode
     )
 
@@ -29,7 +29,7 @@ module Html.Events.Extra exposing
 
 # Event Handlers
 
-@docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter
+@docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange
 
 -}
 
@@ -257,3 +257,11 @@ onEnter onEnterAction =
                     Json.fail (String.fromInt keyCode)
             )
             keyCode
+
+
+{-| An HTML Event attribute that passes the `event.target.value` to a `msg`
+constructor when an `input`, `select`, or `textarea` element has changed.
+-}
+onChange : (String -> msg) -> Attribute msg
+onChange onChangeAction =
+    on "change" <| Json.map onChangeAction targetValue

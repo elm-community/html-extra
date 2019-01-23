@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.0
+
+* Add an `onChange` event attribute.
+
 ## v3.0.0
 
 * Remove the `innerHtml` Html Attribute since Elm 0.19 no longer supports using
