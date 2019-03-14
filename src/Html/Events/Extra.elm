@@ -225,14 +225,14 @@ targetSelectedIndex =
 -}
 onClickPreventDefault : msg -> Attribute msg
 onClickPreventDefault msg =
-    preventDefaultOn "click" <| Json.map (\m -> ( m, True )) <| Json.succeed msg
+    preventDefaultOn "click" <| Json.succeed ( msg, True )
 
 
 {-| Always send `msg` upon click, preventing click propagation.
 -}
 onClickStopPropagation : msg -> Attribute msg
 onClickStopPropagation msg =
-    stopPropagationOn "click" <| Json.map (\m -> ( m, True )) <| Json.succeed msg
+    stopPropagationOn "click" <| Json.succeed ( msg, True )
 
 
 {-| Always send `msg` upon click, preventing the browser's default behavior and propagation
