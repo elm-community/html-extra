@@ -17,7 +17,7 @@ module Html.Events.Extra exposing
 
   - TODO: `KeyEvent`, `keyEvent`
 
-    @docs charCode
+@docs charCode
 
 
 # Typed event decoders
