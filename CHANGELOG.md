@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.1
+
+* Properly expose the `Html.Events.Extra.charCode` decoder.
+
 ## v3.1.0
 
 * Add an `onChange` event attribute.
