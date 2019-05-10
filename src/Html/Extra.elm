@@ -94,5 +94,7 @@ viewIfLazy condition htmlF =
 
 -}
 maybe : (a -> Html msg) -> Maybe a -> Html msg
-maybe =
-    Maybe.unwrap Html.nothing
+maybe fn maybeThing =
+    maybeThing
+        |> Maybe.map fn
+        |> Maybe.withDefault nothing
