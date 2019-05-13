@@ -1,9 +1,9 @@
-module Html.Extra exposing (static, nothing, viewIf, viewIfLazy, maybe)
+module Html.Extra exposing (static, nothing, viewIf, viewIfLazy, viewMaybe)
 
 {-| Convenience functionality on
 [`Html`](http://package.elm-lang.org/packages/elm-lang/html/latest/Html#Html)
 
-@docs static, nothing, viewIf, viewIfLazy, maybe
+@docs static, nothing, viewIf, viewIfLazy, viewMaybe
 
 -}
 
@@ -88,13 +88,13 @@ viewIfLazy condition htmlF =
 
     viewMaybePost : Maybe Post -> Html Msg
     viewMaybePost maybePost =
-        maybe viewPost maybePost
+        viewMaybe viewPost maybePost
 
     viewPost : Post -> Html Msg
 
 -}
-maybe : (a -> Html msg) -> Maybe a -> Html msg
-maybe fn maybeThing =
+viewMaybe : (a -> Html msg) -> Maybe a -> Html msg
+viewMaybe fn maybeThing =
     maybeThing
         |> Maybe.map fn
         |> Maybe.withDefault nothing
