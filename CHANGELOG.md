@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.2.0
+
+* Add the `Html.Extra.viewMaybe` function to render Maybe values into HTML.
+
 ## v3.1.1
 
 * Properly expose the `Html.Events.Extra.charCode` decoder.
