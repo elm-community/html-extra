@@ -1,6 +1,6 @@
 module Html.Attributes.Extra exposing
     ( static
-    , valueAsFloat, valueAsInt
+    , valueAsFloat, valueAsInt, autocomplete
     , role
     , low, high, optimum
     , volume
@@ -20,7 +20,7 @@ module Html.Attributes.Extra exposing
 
 # Inputs
 
-@docs valueAsFloat, valueAsInt
+@docs valueAsFloat, valueAsInt, autocomplete
 
 
 # Semantic web
@@ -50,6 +50,7 @@ module Html.Attributes.Extra exposing
 
 import Html exposing (Attribute)
 import Html.Attributes exposing (attribute, property)
+import Html.Attributes.Autocomplete as Autocomplete
 import Json.Encode as Json
 
 
@@ -115,6 +116,11 @@ It differs from `value` in that an integer value will not necessarily overwrite 
 valueAsInt : Int -> Attribute msg
 valueAsInt value =
     intProperty "valueAsNumber" value
+
+{-| Render one of the possible `Completion` types into an `Attribute`. -}
+autocomplete : Autocomplete.Completion -> Attribute msg
+autocomplete = Autocomplete.completionValue >> attribute "autocomplete"
+
 
 
 {-| Used to annotate markup languages with machine-extractable semantic information about the purpose of an element.

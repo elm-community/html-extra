@@ -7,6 +7,7 @@
     "exposed-modules": [
         "Html.Extra",
         "Html.Attributes.Extra",
+        "Html.Attributes.Autocomplete",
         "Html.Events.Extra"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",

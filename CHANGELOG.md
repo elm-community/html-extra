@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.3.0
+
+* Add a new `Html.Attributes.Autocomplete` module with types and helper
+  functions for use with the new `Html.Attributes.Extre.autocomplete` function.
+  This function allows consumers to build type-safe `autocomplete` attributes
+  for `input` & `textarea` elements.
+
 ## v3.2.0
 
 * Add the `Html.Extra.viewMaybe` function to render Maybe values into HTML.
