@@ -1,5 +1,7 @@
 # Additional HTML-related Functions
 
+[![html-extra Build Status](https://travis-ci.org/elm-community/html-extra.svg?branch=master)](https://travis-ci.org/elm-community/html-extra)
+
 This package contains convenience functions for working with Html, beyond that
 which `elm-lang/html` provides.
 

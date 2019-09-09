@@ -1,0 +1,5 @@
+---
+
+language: elm
+
+script: elm make && elm-format --validate src
