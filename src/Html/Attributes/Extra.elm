@@ -38,7 +38,6 @@ module Html.Attributes.Extra exposing
 @docs volume
 
 
-
 # Custom Attributes
 
 @docs stringProperty
@@ -117,10 +116,12 @@ valueAsInt : Int -> Attribute msg
 valueAsInt value =
     intProperty "valueAsNumber" value
 
-{-| Render one of the possible `Completion` types into an `Attribute`. -}
-autocomplete : Autocomplete.Completion -> Attribute msg
-autocomplete = Autocomplete.completionValue >> attribute "autocomplete"
 
+{-| Render one of the possible `Completion` types into an `Attribute`.
+-}
+autocomplete : Autocomplete.Completion -> Attribute msg
+autocomplete =
+    Autocomplete.completionValue >> attribute "autocomplete"
 
 
 {-| Used to annotate markup languages with machine-extractable semantic information about the purpose of an element.

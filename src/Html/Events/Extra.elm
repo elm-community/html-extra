@@ -1,9 +1,9 @@
 module Html.Events.Extra exposing
-    ( targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
+    ( charCode
+    , targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
     , targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
     , targetSelectedIndex
     , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange
-    , charCode
     )
 
 {-| Additional decoders for use with event handlers in html.
