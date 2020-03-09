@@ -1,5 +1,6 @@
 module Html.Attributes.Extra exposing
     ( static
+    , empty
     , valueAsFloat, valueAsInt, autocomplete
     , role
     , low, high, optimum
@@ -16,6 +17,11 @@ module Html.Attributes.Extra exposing
 # Embedding static attributes
 
 @docs static
+
+
+# No-op attribute
+
+@docs empty
 
 
 # Inputs
@@ -61,6 +67,67 @@ Works alike to [`Html.Extra.static`](Html-Extra#static).
 static : Attribute Never -> Attribute msg
 static =
     Html.Attributes.map never
+
+
+{-| A no-op attribute.
+
+Allows for patterns like:
+
+    Html.div
+        [ someAttr
+        , if someCondition then
+            empty
+
+          else
+            someAttr2
+        ]
+        [ someHtml ]
+
+instead of
+
+    Html.div
+        (someAttr
+            :: (if someCondition then
+                    []
+
+                else
+                    [ someAttr2 ]
+               )
+        )
+        [ someHtml ]
+
+This is useful eg. for conditional event handlers.
+
+---
+
+The only effect it can have on the resulting DOM is adding a `class` attribute,
+or adding an extra trailing space in the `class` attribute if added after
+`Html.Attribute.class` or `Html.Attribute.classList`:
+
+    -- side effect 1:
+    -- <div class="" />
+    Html.div [ empty ] []
+
+    -- side effect 2:
+    -- <div class="x " />
+    Html.div [ class "x", empty ] []
+
+    -- no side effect:
+    -- <div class="x" />
+    Html.div [ empty, class "x" ] []
+
+    -- side effect 2:
+    -- <div class="x " />
+    Html.div [ classList [ ( "x", True ) ], empty ] []
+
+    -- no side effect:
+    -- <div class="x" />
+    Html.div [ empty, classList [ ( "x", True ) ] ] []
+
+-}
+empty : Attribute msg
+empty =
+    Html.Attributes.classList []
 
 
 {-| Create arbitrary string _properties_.
