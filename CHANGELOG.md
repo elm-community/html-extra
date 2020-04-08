@@ -2,6 +2,9 @@
 
 ## v3.4.0
 
+* Add an `empty` value to `Html.Attributes.Extra` to represent empty
+  attributes. Add `attributeIf` & `attributeMaybe` functions for conditional
+  inclusion of attributes.
 * Add a `targetSelectedOptions` decoder to `Html.Events.Extra` for grabbing the
   `selectedOptions` values from an event target.
 * Add the `onMultiSelect` attribute to `Html.Events.Extra` for handling
