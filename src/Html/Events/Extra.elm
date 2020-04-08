@@ -219,15 +219,15 @@ targetSelectedIndex =
 
 {-| Parse `event.target.selectedOptions` and return option values.
 -}
-targetSelectedOptions : Decoder (List String)
+targetSelectedOptions : Json.Decoder (List String)
 targetSelectedOptions =
     let
         options =
-            Decode.at [ "target", "selectedOptions" ] <|
-                Decode.keyValuePairs <|
-                    Decode.field "value" Decode.string
+            Json.at [ "target", "selectedOptions" ] <|
+                Json.keyValuePairs <|
+                    Json.field "value" Json.string
     in
-    Decode.map (List.map (\( _, value ) -> value)) options
+    Json.map (List.map (\( _, value ) -> value)) options
 
 
 
