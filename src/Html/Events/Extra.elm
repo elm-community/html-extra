@@ -2,8 +2,8 @@ module Html.Events.Extra exposing
     ( charCode
     , targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
     , targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
-    , targetSelectedIndex
-    , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange
+    , targetSelectedIndex, targetSelectedOptions
+    , onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange, onMultiSelect
     )
 
 {-| Additional decoders for use with event handlers in html.
@@ -24,12 +24,12 @@ module Html.Events.Extra exposing
 
 @docs targetValueFloat, targetValueInt, targetValueMaybe, targetValueMaybeFloat, targetValueMaybeInt
 @docs targetValueFloatParse, targetValueIntParse, targetValueMaybeFloatParse, targetValueMaybeIntParse
-@docs targetSelectedIndex
+@docs targetSelectedIndex, targetSelectedOptions
 
 
 # Event Handlers
 
-@docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange
+@docs onClickPreventDefault, onClickStopPropagation, onClickPreventDefaultAndStopPropagation, onEnter, onChange, onMultiSelect
 
 -}
 
@@ -217,6 +217,19 @@ targetSelectedIndex =
         )
 
 
+{-| Parse `event.target.selectedOptions` and return option values.
+-}
+targetSelectedOptions : Json.Decoder (List String)
+targetSelectedOptions =
+    let
+        options =
+            Json.at [ "target", "selectedOptions" ] <|
+                Json.keyValuePairs <|
+                    Json.field "value" Json.string
+    in
+    Json.map (List.map Tuple.second) options
+
+
 
 -- Event Handlers
 
@@ -265,3 +278,26 @@ constructor when an `input`, `select`, or `textarea` element has changed.
 onChange : (String -> msg) -> Attribute msg
 onChange onChangeAction =
     on "change" <| Json.map onChangeAction targetValue
+
+
+{-| Detect change events on multi-choice select elements.
+
+It will grab the string values of `event.target.selectedOptions` on any change
+event.
+
+Check out [`targetSelectedOptions`](#targetSelectedOptions) for more details on
+how this works.
+
+Note: [`onChange`](#onChange) parses `event.target.value` that doesn't work with
+multi-choice select elements.
+
+Note 2:
+[`selectedOptions`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/selectedOptions)
+is not supported by Internet Explorer.
+
+-}
+onMultiSelect : (List String -> msg) -> Attribute msg
+onMultiSelect tagger =
+    stopPropagationOn "change" <|
+        Json.map (\x -> ( x, True )) <|
+            Json.map tagger targetSelectedOptions
