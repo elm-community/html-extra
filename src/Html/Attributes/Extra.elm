@@ -1,6 +1,6 @@
 module Html.Attributes.Extra exposing
     ( static
-    , empty
+    , empty, attributeIf, attributeMaybe
     , valueAsFloat, valueAsInt, autocomplete
     , role
     , low, high, optimum
@@ -19,9 +19,9 @@ module Html.Attributes.Extra exposing
 @docs static
 
 
-# No-op attribute
+# Conditional attribute handling
 
-@docs empty
+@docs empty, attributeIf, attributeMaybe
 
 
 # Inputs
@@ -128,6 +128,26 @@ or adding an extra trailing space in the `class` attribute if added after
 empty : Attribute msg
 empty =
     Html.Attributes.classList []
+
+
+{-| A function to only render a HTML attribute under a certain condition
+-}
+attributeIf : Bool -> Attribute msg -> Attribute msg
+attributeIf condition attr =
+    if condition then
+        attr
+
+    else
+        empty
+
+
+{-| Renders `empty` attribute in case of Nothing, uses the provided function in case of Just.
+-}
+attributeMaybe : (a -> Attribute msg) -> Maybe a -> Attribute msg
+attributeMaybe fn maybeThing =
+    maybeThing
+        |> Maybe.map fn
+        |> Maybe.withDefault empty
 
 
 {-| Create arbitrary string _properties_.
