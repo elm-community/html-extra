@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.4.0
+
+* Add a `targetSelectedOptions` decoder to `Html.Events.Extra` for grabbing the
+  `selectedOptions` values from an event target.
+* Add the `onMultiSelect` attribute to `Html.Events.Extra` for handling
+  `change` events on multiple-choice `select` elements.
+
 ## v3.3.0
 
 * Add a new `Html.Attributes.Autocomplete` module with types and helper
