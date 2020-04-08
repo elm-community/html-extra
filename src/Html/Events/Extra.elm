@@ -227,7 +227,7 @@ targetSelectedOptions =
                 Json.keyValuePairs <|
                     Json.field "value" Json.string
     in
-    Json.map (List.map (\( _, value ) -> value)) options
+    Json.map (List.map Tuple.second) options
 
 
 
@@ -299,10 +299,5 @@ is not supported by Internet Explorer.
 onMultiSelect : (List String -> msg) -> Attribute msg
 onMultiSelect tagger =
     stopPropagationOn "input" <|
-        Json.map alwaysStop <|
+        Json.map (\x -> ( x, True )) <|
             Json.map tagger targetSelectedOptions
-
-
-alwaysStop : a -> ( a, Bool )
-alwaysStop x =
-    ( x, True )
