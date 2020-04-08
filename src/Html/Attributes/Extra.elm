@@ -144,10 +144,8 @@ attributeIf condition attr =
 {-| Renders `empty` attribute in case of Nothing, uses the provided function in case of Just.
 -}
 attributeMaybe : (a -> Attribute msg) -> Maybe a -> Attribute msg
-attributeMaybe fn maybeThing =
-    maybeThing
-        |> Maybe.map fn
-        |> Maybe.withDefault empty
+attributeMaybe fn =
+    Maybe.map fn >> Maybe.withDefault empty
 
 
 {-| Create arbitrary string _properties_.
