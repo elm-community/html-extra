@@ -3,7 +3,7 @@
     "name": "elm-community/html-extra",
     "summary": "Additional functions for working with Html",
     "license": "MIT",
-    "version": "3.3.0",
+    "version": "3.4.0",
     "exposed-modules": [
         "Html.Extra",
         "Html.Attributes.Extra",
