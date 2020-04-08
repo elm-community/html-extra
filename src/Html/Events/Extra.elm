@@ -280,15 +280,15 @@ onChange onChangeAction =
     on "change" <| Json.map onChangeAction targetValue
 
 
-{-| Detect input events on multi-choice select elements.
+{-| Detect change events on multi-choice select elements.
 
-It will grab the string values of `event.target.selectedOptions` on any input
+It will grab the string values of `event.target.selectedOptions` on any change
 event.
 
 Check out [`targetSelectedOptions`](#targetSelectedOptions) for more details on
 how this works.
 
-Note: `Html.Events.onInput` parses `event.target.value` that doesn't work with
+Note: [`onChange`](#onChange) parses `event.target.value` that doesn't work with
 multi-choice select elements.
 
 Note 2:
@@ -298,6 +298,6 @@ is not supported by Internet Explorer.
 -}
 onMultiSelect : (List String -> msg) -> Attribute msg
 onMultiSelect tagger =
-    stopPropagationOn "input" <|
+    stopPropagationOn "change" <|
         Json.map (\x -> ( x, True )) <|
             Json.map tagger targetSelectedOptions
