@@ -26,7 +26,7 @@ You'll probably want to import this module with an alias:
             ]
             []
 
-Check out the [HTML Spec][spec] for more informaion about the `autocomplete`
+Check out the [HTML Spec][spec] for more information about the `autocomplete`
 attribute and the autocomplete detail tokens, such as their meaning, valid
 controls, and inputformat.
 
