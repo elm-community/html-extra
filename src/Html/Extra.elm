@@ -69,9 +69,9 @@ viewIf condition html =
         div
             []
             [ fieldInput model
-            , viewIf
+            , viewIfLazy
                 (not <| List.isEmpty model.errors)
-                errorsView
+                (\() -> errorsView)
             ]
 
 -}
